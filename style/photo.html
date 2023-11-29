@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Photo Details</title>
+</head>
+<body>
+    <h1>Photo Details</h1>
+
+    <?php
+    $connection = new mysqli("localhost", "username", "password", "database");
+
+    if ($connection->connect_error) {
+        die("Connection failed: " . $connection->connect_error);
+    }
+
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
+
+        // Blind SQL Injection Vulnerability
+        $sql = "SELECT * FROM photos WHERE id = '$id'";
+        $result = $connection->query($sql);
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo "Title: " . $row["title"] . "<br>";
+                echo "<img src='" . $row["image_path"] . "' alt='" . $row["title"] . "'><br>";
+                echo "Description: " . $row["description"] . "<br>";
+            }
+        } else {
+            echo "No details found";
+        }
+    }
+
+    $connection->close();
+    ?>
+</body>
+</html>

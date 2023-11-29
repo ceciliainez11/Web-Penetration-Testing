@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Photo</title>
+</head>
+<body>
+    <h1>Search Photo</h1>
+    <form method="GET" action="search.php">
+        <input type="text" name="search" placeholder="Search photo...">
+        <input type="submit" value="Search">
+    </form>
+
+    <?php
+    $connection = new mysqli("localhost", "username", "password", "database");
+
+    if ($connection->connect_error) {
+        die("Connection failed: " . $connection->connect_error);
+    }
+
+    if (isset($_GET['search'])) {
+        $search = $_GET['search'];
+
+        // Reflected XSS Vulnerability
+        echo "Results for: " . $search . "<br><br>";
+
+        $sql = "SELECT id, title FROM photos WHERE title LIKE '%" . $search . "%'";
+        $result = $connection->query($sql);
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo "<a href='detail.php?id=" . $row["id"] . "'>" . $row["title"] . "</a><br>";
+            }
+        } else {
+            echo "No results found";
+        }
+    }
+
+    $connection->close();
+    ?>
+</body>
+</html>
