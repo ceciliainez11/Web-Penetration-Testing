@@ -1,22 +1,76 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Search Engine</title>
+<html lang="en">
 
-<style type="text/css">
-
-    body{
-        background-color: #F0F8FF;
-        margin-top: -120px;
-    }
-    form {
-        margin: 25%; 
-    }
-</style> 
-    </head> 
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <title>Search</title>
+</head>
 
 <body>
-    <form action="result.php" method="post">
-        <img src="Web-Penetration-Testing/logo.png" />
-        <input type="text" name="user_query" size="80" placeholder="Search Image"/>
-        <input type="submit" name="search" value="Search">
+    <div class="container">
+        <form method="post">
+            <input type="text" placeholder="Search Clients" name="search">
+            <button class="btn btn-dark btn-sm" name="submit">Search</button>
+        </form>
+        <div class="container my-5">
+            <?php
+            // Result table will be echoed here
+            ?>
+        </div>
+    </div>
+    <?php
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $database = "pentest";
+
+    // Create Connection
+    $con = mysqli_connect($servername, $username, $password, $database);
+
+    // Check Connection
+    if (!$con) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+
+    if (isset($_POST["submit"])) {
+        $search = $_POST["search"];
+
+        $sql = "SELECT * FROM `clients` WHERE `name` LIKE '%$search%' OR `id` = '$search'";
+        $result = mysqli_query($con, $sql);
+
+        if ($result) {
+            if (mysqli_num_rows($result) > 0) {
+                echo '<table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>';
+
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo '<tr>
+                        <td>' . $row['id'] . '</td>
+                        <td>' . $row['name'] . '</td>
+                    </tr>';
+                }
+
+                echo '</tbody></table>';
+            } else {
+                echo '<h2 class="text-danger">Data not found</h2>';
+            }
+        } else {
+            echo "Error: " . mysqli_error($con);
+        }
+
+        // Close connection
+        mysqli_close($con);
+    }
+    ?>
+</body>
+
+</html>
