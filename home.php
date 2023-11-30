@@ -18,11 +18,17 @@
 <body>
     <div class="nav">
         <div class="logo">
-            <p><a href="home.php">Logo</a> </p>
+            <p><a href="home.php">Logo</a></p>
+        </div>
+
+        <div class="search-container">
+            <form action="result.php" method="post">
+                <input type="text" placeholder="Search..." name="user_query">
+                <button type="submit" name="search">Search</button>
+            </form>
         </div>
 
         <div class="right-links">
-
             <?php 
             
             $id = $_SESSION['id'];
@@ -38,11 +44,9 @@
             ?>
 
             <a href="php/logout.php"> <button class="btn">Log Out</button> </a>
-
         </div>
     </div>
     <main>
-
        <div class="main-box top">
           <div class="top">
             <div class="box">
@@ -53,7 +57,6 @@
             </div>
           </div>
        </div>
-
     </main>
 </body>
 </html>
