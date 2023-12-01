@@ -21,6 +21,10 @@
             <p><a href="home.php">Logo</a></p>
         </div>
 
+        <div class="logo">
+            <a href="clients.php"> <button class="btn">Upload Photo</button> </a>
+        </div>
+
         <div class="search-container">
             <form action="result.php" method="post">
                 <input type="text" placeholder="Search..." name="user_query">

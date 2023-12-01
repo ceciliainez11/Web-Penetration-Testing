@@ -25,6 +25,7 @@
                         <th>Phone</th>
                         <th>Address</th>
                         <th>Created At</th>
+                        <th>Image URL</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,6 +61,7 @@
                         <td>$row[phone]</td>
                         <td>$row[address]</td>
                         <td>$row[created_at]</td>
+                        <td>$row[image_url]</td>
                     </tr>
                         ";
                     }

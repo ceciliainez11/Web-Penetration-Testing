@@ -11,6 +11,7 @@ $name = "";
 $email = "";
 $phone = "";
 $address = "";
+$image_url = "";
 
 $errorMessage = "";
 $successMessage = "";
@@ -20,16 +21,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST["email"];
     $phone = $_POST["phone"];
     $address = $_POST["address"];
+    $image_url = $_POST["image_url"];
 
     do {
-        if (empty($name) || empty($email) || empty($phone) || empty($address)) {
+        if (empty($name) || empty($email) || empty($phone) || empty($address) || empty($image_url)) {
             $errorMessage = "All the fields are required";
             break;
         }
 
         // add new client to database
-        $sql = "INSERT INTO clients (name, email, phone, address)" .
-            "VALUES ('$name', '$email', '$phone', '$address')";
+        $sql = "INSERT INTO clients (name, email, phone, address, image_url)" .
+            "VALUES ('$name', '$email', '$phone', '$address', '$image_url')";
         $result = $connection->query($sql);
 
         if (!$result) {
@@ -41,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $email = "";
         $phone = "";
         $address = "";
+        $image_url = "";
         $successMessage = "Client added correctly";
 
         header("location: /pentest/clients.php");
@@ -101,6 +104,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="text" class="form-control" name="address" value="<?php echo $address; ?>">
                 </div>
             </div>
+
+            <?php if (isset($_GET['error'])): ?>
+                <p>
+                    <?php echo $_GET['error']; ?>
+                </p>
+            <?php endif ?>
+            <form action="upload.php" method="post" enctype="multipart/form-data">
+
+                <input type="file" name="image_url">
+
+                <input type="submit" name="submit" value="Upload">
+
+            </form>
 
             <?php
             if (!empty($successMessage)) {

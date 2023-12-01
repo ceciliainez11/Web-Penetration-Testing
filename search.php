@@ -1,27 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE-edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <title>Search</title>
-</head>
-
-<body>
-    <div class="container">
-        <form method="post">
-            <input type="text" placeholder="Search Clients" name="search">
-            <button class="btn btn-dark btn-sm" name="submit">Search</button>
-        </form>
-        <div class="container my-5">
-            <?php
-            // Result table will be echoed here
-            ?>
-        </div>
-    </div>
-    <?php
+<?php
     $servername = "localhost";
     $username = "root";
     $password = "";
@@ -48,6 +25,11 @@
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
+                            <th>email</th>
+                            <th>phone</th>
+                            <th>address</th>
+                            <th>image url</th>
+
                         </tr>
                     </thead>
                     <tbody>';
@@ -56,6 +38,10 @@
                     echo '<tr>
                         <td>' . $row['id'] . '</td>
                         <td>' . $row['name'] . '</td>
+                        <td>' . $row['email'] . '</td>
+                        <td>' . $row['phone'] . '</td>
+                        <td>' . $row['address'] . '</td>
+                        <td>' . $row['image url'] . '</td>
                     </tr>';
                 }
 
@@ -71,6 +57,37 @@
         mysqli_close($con);
     }
     ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <title>Search</title>
+</head>
+
+<body>
+    <div class="container">
+        <form method="post">
+            <input type="text" placeholder="Search Clients" name="search">
+            <button class="btn btn-dark btn-sm" name="submit">Search</button>
+        </form>
+
+        <?php if ($_SERVER["REQUEST_METHOD"] == "POST"): ?>
+            <p>Searching for: <?php echo htmlspecialchars($search); ?></p>
+        <?php echo $search; ?>
+        <?php endif; ?>
+
+        <div class="container my-5">
+            <?php
+            // Result table will be echoed here
+            ?>
+        </div>
+    </div>
+  
 </body>
 
 </html>
