@@ -13,6 +13,7 @@
     <div class="container my-5">
         <div class="box form-box">
             <h2>List of Clients</h2>
+            <a class="btn btn-secondary" href="home.php" class="btn btn-secondary mb-3">&#8592; Back</a>
             <a class="btn btn-primary" href="search.php" role="button">Search Client</a>
             <a class="btn btn-primary" href="create.php" role="button">New Client</a>
             <br>
@@ -25,7 +26,6 @@
                         <th>Phone</th>
                         <th>Address</th>
                         <th>Created At</th>
-                        <th>Image URL</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -61,7 +61,6 @@
                         <td>$row[phone]</td>
                         <td>$row[address]</td>
                         <td>$row[created_at]</td>
-                        <td>$row[image_url]</td>
                     </tr>
                         ";
                     }

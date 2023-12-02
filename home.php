@@ -1,13 +1,14 @@
-<?php 
-   session_start();
+<?php
+session_start();
 
-   include("php/config.php");
-   if(!isset($_SESSION['valid'])){
-    header("Location: index.php");
-   }
+include("php/config.php");
+if (!isset($_SESSION['valid'])) {
+    header("Location: login.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,35 +16,30 @@
     <link rel="stylesheet" href="style/style.css">
     <title>Home</title>
 </head>
+
 <body>
+
     <div class="nav">
-        <div class="logo">
-            <p><a href="home.php">Logo</a></p>
+        <div class="logo" style="margin-top: 10px;">
+            <p><a href="home.php"><img src="logoB9.png" alt="Logo" style="width: 40px; height: auto;"></a></p>
         </div>
 
         <div class="logo">
-            <a href="clients.php"> <button class="btn">Upload Photo</button> </a>
-        </div>
-
-        <div class="search-container">
-            <form action="result.php" method="post">
-                <input type="text" placeholder="Search..." name="user_query">
-                <button type="submit" name="search">Search</button>
-            </form>
+            <a href="clients.php"> <button class="btn">Client Page</button> </a>
         </div>
 
         <div class="right-links">
-            <?php 
-            
-            $id = $_SESSION['id'];
-            $query = mysqli_query($con,"SELECT*FROM users WHERE Id=$id");
+            <?php
 
-            while($result = mysqli_fetch_assoc($query)){
+            $id = $_SESSION['id'];
+            $query = mysqli_query($con, "SELECT*FROM users WHERE Id=$id");
+
+            while ($result = mysqli_fetch_assoc($query)) {
                 $res_Uname = $result['Username'];
                 $res_Email = $result['Email'];
                 $res_id = $result['Id'];
             }
-            
+
             echo "<a href='edit.php?Id=$res_id'>Change Profile</a>";
             ?>
 
@@ -51,16 +47,21 @@
         </div>
     </div>
     <main>
-       <div class="main-box top">
-          <div class="top">
-            <div class="box">
-                <p>Hello <b><?php echo $res_Uname ?></b>, Welcome</p>
+        <div class="main-box top">
+            <div class="top">
+                <div class="box">
+                    <p>Hello <b>
+                            <?php echo $res_Uname ?>
+                        </b>, Welcome</p>
+                </div>
+                <div class="box">
+                    <p>Your email is <b>
+                            <?php echo $res_Email ?>
+                        </b>.</p>
+                </div>
             </div>
-            <div class="box">
-                <p>Your email is <b><?php echo $res_Email ?></b>.</p>
-            </div>
-          </div>
-       </div>
+        </div>
     </main>
 </body>
+
 </html>
