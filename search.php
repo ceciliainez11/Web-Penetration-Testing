@@ -18,7 +18,7 @@ $result = null;
 if (isset($_POST["submit"])) {
     $search = $_POST["search"];
 
-    $sql = "SELECT * FROM `clients` WHERE `name` LIKE '%$search%' OR `id` = '$search'";
+    $sql = "SELECT * FROM `users` WHERE `Username` LIKE '%$search%' OR `Id` = '$search'";
     $result = mysqli_query($con, $sql);
 
     if (!$result) {
@@ -43,8 +43,8 @@ if (isset($_POST["submit"])) {
 
 <body class="bg-light">
     <div class="container my-5">
-        <a class="btn btn-secondary" href="home.php" class="btn btn-secondary mb-3">&#8592; Back</a>
-        <h1 class="text-center mb-4">Client Search</h1>
+        <a class="btn btn-secondary" href="users.php" class="btn btn-secondary mb-3">&#8592; Back</a>
+        <h1 class="text-center mb-4">User Search</h1>
 
         <form method="post" class="mb-4">
             <div class="input-group">
@@ -57,7 +57,7 @@ if (isset($_POST["submit"])) {
         <?php if ($_SERVER["REQUEST_METHOD"] == "POST"): ?>
             <div class="alert alert-info" role="alert">
                 Searching for:
-                <?php echo htmlspecialchars($search); ?>
+                <?php echo ($search); ?>
             </div>
 
             <?php if ($result && mysqli_num_rows($result) > 0): ?>
@@ -66,29 +66,17 @@ if (isset($_POST["submit"])) {
                         <thead class="thead-dark">
                             <tr>
                                 <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Address</th>
+                                <th>Username</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php while ($row = mysqli_fetch_assoc($result)): ?>
                                 <tr>
                                     <td>
-                                        <?php echo $row['id']; ?>
+                                        <?php echo $row['Id']; ?>
                                     </td>
                                     <td>
-                                        <?php echo $row['name']; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $row['email']; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $row['phone']; ?>
-                                    </td>
-                                    <td>
-                                        <?php echo $row['address']; ?>
+                                        <?php echo $row['Username']; ?>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
