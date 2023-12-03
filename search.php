@@ -7,7 +7,6 @@ $database = "pentest";
 // Create Connection
 $con = mysqli_connect($servername, $username, $password, $database);
 
-// Check Connection
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
@@ -16,15 +15,21 @@ $search = "";
 $result = null;
 
 if (isset($_POST["submit"])) {
-    // Using prepared statements to prevent SQL injection
+    // Validate and sanitize user input
     $search = $_POST["search"];
-    $sql = "SELECT * FROM `users` WHERE `Username` LIKE ? OR `Id` = ?";
+    if (!ctype_alnum($search)) {
+        die("Invalid input");
+    }
+
+    // Using prepared statements to prevent SQL injection
+    $sql = "SELECT * FROM `users` WHERE `Username` LIKE ? OR `Id` LIKE ?";
 
     // Prepare statement
     $stmt = mysqli_prepare($con, $sql);
 
     // Bind parameters and secure input values
-    mysqli_stmt_bind_param($stmt, "ss", $search, $search);
+    $search_param = "%" . $search . "%"; // Adding wildcards for partial matching
+    mysqli_stmt_bind_param($stmt, "ss", $search_param, $search_param);
 
     // Execute query
     mysqli_stmt_execute($stmt);
@@ -33,7 +38,8 @@ if (isset($_POST["submit"])) {
     $result = mysqli_stmt_get_result($stmt);
 
     if (!$result) {
-        echo "Error: " . mysqli_error($con);
+        error_log("Error executing SQL statement: " . mysqli_error($con));
+        die("An unexpected error occurred. Please try again later.");
     }
 
     // Close statement
@@ -43,6 +49,7 @@ if (isset($_POST["submit"])) {
 // Close connection (moved to the end to stay open during table rendering)
 // mysqli_close($con);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,7 +65,7 @@ if (isset($_POST["submit"])) {
 <body class="bg-light">
     <div class="container my-5">
         <a class="btn btn-secondary" href="users.php" class="btn btn-secondary mb-3">&#8592; Back</a>
-        <h1 class="text-center mb-4">User Search</h1>
+        <h1 class="text-center mb-4">Search User</h1>
 
         <form method="post" class="mb-4">
             <div class="input-group">
