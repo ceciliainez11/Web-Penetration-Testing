@@ -16,18 +16,32 @@ $search = "";
 $result = null;
 
 if (isset($_POST["submit"])) {
+    // Using prepared statements to prevent SQL injection
     $search = $_POST["search"];
+    $sql = "SELECT * FROM `users` WHERE `Username` LIKE ? OR `Id` = ?";
 
-    $sql = "SELECT * FROM `users` WHERE `Username` LIKE '%$search%' OR `Id` = '$search'";
-    $result = mysqli_query($con, $sql);
+    // Prepare statement
+    $stmt = mysqli_prepare($con, $sql);
+
+    // Bind parameters and secure input values
+    mysqli_stmt_bind_param($stmt, "ss", $search, $search);
+
+    // Execute query
+    mysqli_stmt_execute($stmt);
+
+    // Get result
+    $result = mysqli_stmt_get_result($stmt);
 
     if (!$result) {
         echo "Error: " . mysqli_error($con);
     }
 
-    // Close connection (moved to the end to keep it open during the rendering of the table)
-    // mysqli_close($con);
+    // Close statement
+    mysqli_stmt_close($stmt);
 }
+
+// Close connection (moved to the end to stay open during table rendering)
+// mysqli_close($con);
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +49,7 @@ if (isset($_POST["submit"])) {
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <title>Search</title>
@@ -49,7 +63,7 @@ if (isset($_POST["submit"])) {
         <form method="post" class="mb-4">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Search Clients" name="search"
-                    value="<?php echo htmlspecialchars($search); ?>">
+                    value="<?= htmlspecialchars($search); ?>">
                 <button class="btn btn-dark" name="submit">Search</button>
             </div>
         </form>
@@ -57,7 +71,7 @@ if (isset($_POST["submit"])) {
         <?php if ($_SERVER["REQUEST_METHOD"] == "POST"): ?>
             <div class="alert alert-info" role="alert">
                 Searching for:
-                <?php echo ($search); ?>
+                <?= htmlspecialchars($search); ?>
             </div>
 
             <?php if ($result && mysqli_num_rows($result) > 0): ?>
@@ -73,10 +87,10 @@ if (isset($_POST["submit"])) {
                             <?php while ($row = mysqli_fetch_assoc($result)): ?>
                                 <tr>
                                     <td>
-                                        <?php echo $row['Id']; ?>
+                                        <?= htmlspecialchars($row['Id']); ?>
                                     </td>
                                     <td>
-                                        <?php echo $row['Username']; ?>
+                                        <?= htmlspecialchars($row['Username']); ?>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>

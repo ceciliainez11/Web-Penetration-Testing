@@ -22,7 +22,12 @@ session_start();
                 $email = mysqli_real_escape_string($con, $_POST['email']);
                 $password = mysqli_real_escape_string($con, $_POST['password']);
 
-                $result = mysqli_query($con, "SELECT * FROM users WHERE Email='$email' AND Password='$password' ") or die("Select Error");
+                // Using prepared statements to mitigate SQL injection
+                $stmt = mysqli_prepare($con, "SELECT * FROM users WHERE Email=? AND Password=?");
+                mysqli_stmt_bind_param($stmt, "ss", $email, $password);
+                mysqli_stmt_execute($stmt);
+
+                $result = mysqli_stmt_get_result($stmt);
                 $row = mysqli_fetch_assoc($result);
 
                 if (is_array($row) && !empty($row)) {
@@ -39,9 +44,8 @@ session_start();
                 if (isset($_SESSION['valid'])) {
                     header("Location: home.php");
                 }
+                mysqli_stmt_close($stmt);
             } else {
-
-
                 ?>
                 <header>Login</header>
                 <form action="" method="post">
@@ -56,11 +60,10 @@ session_start();
                     </div>
 
                     <div class="field">
-
                         <input type="submit" class="btn" name="submit" value="Login" required>
                     </div>
                     <div class="links">
-                        Don't have account? <a href="register.php">Sign Up Now</a>
+                        Don't have an account? <a href="register.php">Sign Up Now</a>
                     </div>
                 </form>
             </div>
