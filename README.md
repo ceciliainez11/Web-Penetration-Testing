@@ -5,7 +5,7 @@
 Proyek ini dilakukan untuk melakukan penetration test pada aplikasi web guna mengidentifikasi dan mengevaluasi kerentanan terhadap serangan Blind SQL Injection dan XSS Reflected. Uji penetrasi bertujuan untuk mengamati kelemahan keamanan pada aplikasi dan memberikan rekomendasi perbaikan.
 
     Group B9:
-        - Akmal Rabbani                  - 2106731610
+        - Akmal Rabbani                       - 2106731610
         - Cecilia Inez Reva Manurung          - 2106636994
 
 ## Rekomendasi Perbaikan
